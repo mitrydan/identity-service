@@ -1,11 +1,11 @@
 ﻿using IdentityService.Common.Constants;
+using IdentityService.Models;
+using IdentityService.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IdentityService.Models;
-using IdentityService.Requests;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
