@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using IdentityService.BlazorClient.Infrastructure;
+using Microsoft.AspNetCore.Components;
 using System;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ namespace IdentityService.BlazorClient.Pages
     public partial class FetchData : ComponentBase
     {
         [Inject]
-        private HttpClient Http { get; set; }
+        private IdentityServiceHttpClient Http { get; set; }
 
         private WeatherForecast[] forecasts;
 
