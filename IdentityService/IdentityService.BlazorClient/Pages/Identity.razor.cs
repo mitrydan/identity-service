@@ -2,8 +2,7 @@
 
 namespace IdentityService.BlazorClient.Pages
 {
-    public partial class Role : ComponentBase
+    public partial class Identity : ComponentBase 
     {
-        private string title = "Text";
     }
 }
