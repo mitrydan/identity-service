@@ -9,3 +9,7 @@ cd deploy
 docker-compose build
 docker-compose up
 ```
+Front доступен по ссылке:
+```
+http://localhost:5000
+```
