@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace IdentityService
 {
@@ -14,7 +16,14 @@ namespace IdentityService
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .ConfigureAppConfiguration((hostingContext, config) =>
+                        {
+                            config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                            config.AddEnvironmentVariables();
+                            config.AddUserSecrets(Assembly.GetExecutingAssembly(), optional: true);
+                        });
                 });
     }
 }
