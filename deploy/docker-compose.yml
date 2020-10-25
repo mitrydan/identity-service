@@ -20,3 +20,11 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
+
+  blazor:
+    image: ${DOCKER_REGISTRY}blazor
+    build:
+      context: ../
+      dockerfile: ./deploy/BlazorClient.Dockerfile
+    ports:
+      - "5000:82"
