@@ -33,6 +33,13 @@ namespace IdentityService
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddControllersAsServices();
 
+            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", build =>
+            {
+                build.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader();
+            }));
+
             services.Configure<SystemAdminConfig>(Configuration.GetSection(SystemAdminSection));
             services.AddDbContext<IdentityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString(IdentityServerConnectionString)));
             services.AddDbContext<AspIdentityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString(IdentityServerUsersConnectionString)));
@@ -68,6 +75,7 @@ namespace IdentityService
 
             DatabaseInitializer.Initialize(app);
 
+            app.UseCors("ApiCorsPolicy");
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();

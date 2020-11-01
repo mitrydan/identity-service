@@ -1,6 +1,8 @@
+using Blazored.LocalStorage;
 using IdentityService.BlazorClient.Infrastructure;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace IdentityService.BlazorClient
@@ -12,8 +14,14 @@ namespace IdentityService.BlazorClient
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new IdentityServiceHttpClient());
+            builder.Services.AddBlazoredLocalStorage();
+
             builder.Services.AddSingleton(sp => new EventAggregator());
+            builder.Services.AddScoped(sp => new HttpClient());
+
+            builder.Services.AddTransient<ApiClientDelegatingHandler>();
+            builder.Services.AddHttpClient("ApiClient").AddHttpMessageHandler<ApiClientDelegatingHandler>();
+            builder.Services.AddScoped<IIdentityServiceHttpClient, IdentityServiceHttpClient>();
 
             await builder.Build().RunAsync();
         }

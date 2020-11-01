@@ -1,13 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu IsLoggedIn="@IsLoggedId" />
 </div>
 
 <div class="main">
     <div class="top-row px-4">
-        <NavLink class="nav-link ml-md-auto" href="signin">
-            Sign in
+        <NavLink class="nav-link ml-md-auto" href="@NavLinkHref">
+            @NavLinkText
         </NavLink>
     </div>
 
