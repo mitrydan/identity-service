@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace IdentityService.BlazorClient.Infrastructure
 {
-    public interface IIdentityServiceHttpClient
+    public interface IIdentityServiceClient
     {
         Task<GetTokenRs> GetTokenAsync(GetTokenRq request);
 

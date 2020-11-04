@@ -2,7 +2,7 @@
 
 namespace IdentityService.BlazorClient.Responses
 {
-    public class GetTokenRs : BaseResponse
+    public sealed class GetTokenRs : BaseResponse
     {
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }

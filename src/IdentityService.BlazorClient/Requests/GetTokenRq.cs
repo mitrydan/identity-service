@@ -2,7 +2,7 @@
 
 namespace IdentityService.BlazorClient.Requests
 {
-    public class GetTokenRq
+    public sealed class GetTokenRq
     {
         [JsonProperty("grant_type")]
         public string GrantType { get; set; }

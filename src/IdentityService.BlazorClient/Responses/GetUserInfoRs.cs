@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IdentityService.BlazorClient.Responses
 {
-    public class GetUserInfoRs : BaseResponse
+    public sealed class GetUserInfoRs : BaseResponse
     {
         [JsonProperty("role")]
         public IEnumerable<string> Roles { get; set; }
