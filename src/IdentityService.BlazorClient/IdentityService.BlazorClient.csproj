@@ -22,4 +22,8 @@
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IdentityService.Common\IdentityService.Common.csproj" />
+  </ItemGroup>
+
 </Project>

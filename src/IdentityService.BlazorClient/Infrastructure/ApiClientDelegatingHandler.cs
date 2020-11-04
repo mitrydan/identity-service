@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using IdentityService.BlazorClient.Responses;
+using IdentityService.Common.Constants;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -64,11 +65,11 @@ namespace IdentityService.BlazorClient.Infrastructure
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"/connect/token")
             {
-                Content = new FormUrlEncodedContent(new Dictionary<string, string> 
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "grant_type", "refresh_token" },
-                    { "client_id", Configuration["App:ClientId"] },
-                    { "client_secret", Configuration["App:ClientSecret"] },
+                    { "client_id", IdentityConstants.AdminServiceName },
+                    { "client_secret", IdentityConstants.AdminServiceSecret },
                     { "refresh_token", _refreshToken }
                 })
             };
