@@ -1,35 +1,40 @@
 ﻿using IdentityService.BlazorClient.Infrastructure;
+using IdentityService.BlazorClient.Store;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace IdentityService.BlazorClient.Shared
 {
-    public partial class MainLayout : LayoutComponentBase
+    public partial class MainLayout : MainLayoutBase
     {
         [Inject]
-        private IIdentityServiceClient HttpClient { get; set; }
+        private IIdentityServiceClient Client { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
-        private bool IsLoggedId { get; set; }
+        private bool IsLoggedId => !string.IsNullOrEmpty(State.UserId);
 
         private string NavLinkText => IsLoggedId ? "Sign Out" : "Sign In";
 
         private string NavLinkHref => IsLoggedId ? "signout" : "signin";
 
+        public MainLayout() : base(nameof(MainLayout))
+        { }
+
         protected override async Task OnInitializedAsync()
         {
-            var userInfo = await HttpClient.GetUserInfoAsync();
-            
+            var userInfo = await Client.GetUserInfoAsync();
+
             if (userInfo.IsFailed && (userInfo.HttpStatusCode == HttpStatusCode.Unauthorized || userInfo.HttpStatusCode == HttpStatusCode.Forbidden))
             {
                 NavigationManager.NavigateTo("/signin");
                 return;
             }
 
-            IsLoggedId = true;
+            Dispatch(new SetUserIdAction(userInfo.Sub));
+            Dispatch(new SetUserRoleAction(userInfo.Role));
         }
     }
 }

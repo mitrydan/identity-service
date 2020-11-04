@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace IdentityService.BlazorClient.Store
+﻿namespace IdentityService.BlazorClient.Store
 {
-    public class ApplicationState
+    public sealed class ApplicationState
     {
         public string UserId { get; set; }
 
-        public IEnumerable<string> UserRoles { get; set; }
+        public string UserRole { get; set; }
     }
 }

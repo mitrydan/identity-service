@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace IdentityService.BlazorClient.Infrastructure
 {
@@ -23,6 +24,8 @@ namespace IdentityService.BlazorClient.Infrastructure
 
         public void Subscribe(string page, Action handler)
         {
+            Debug.WriteLine($"Subscribe {page}");
+
             if (Subscribers.ContainsKey(page))
             {
                 Subscribers[page] = handler;
@@ -35,6 +38,8 @@ namespace IdentityService.BlazorClient.Infrastructure
 
         public void Unsubscribe(string page)
         {
+            Debug.WriteLine($"Unsubscribe {page}");
+
             if (!Subscribers.ContainsKey(page))
             {
                 return;

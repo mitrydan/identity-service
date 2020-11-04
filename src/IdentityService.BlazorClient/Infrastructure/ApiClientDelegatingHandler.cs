@@ -17,9 +17,6 @@ namespace IdentityService.BlazorClient.Infrastructure
         private const string AccessTokenKey = "AccessToken";
         private const string RefreshTokenKey = "RefreshToken";
 
-        private string _accessToken;
-        private string _refreshToken;
-
         private ISyncLocalStorageService LocalStorage { get; }
 
         private IConfiguration Configuration { get; }
@@ -30,14 +27,13 @@ namespace IdentityService.BlazorClient.Infrastructure
         {
             LocalStorage = localStorage;
             Configuration = configuration;
-
-            _accessToken = LocalStorage.GetItemAsString(AccessTokenKey);
-            _refreshToken = LocalStorage.GetItemAsString(RefreshTokenKey);
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            var accessToken = LocalStorage.GetItemAsString(AccessTokenKey);
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await base.SendAsync(request, cancellationToken);
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -49,7 +45,7 @@ namespace IdentityService.BlazorClient.Infrastructure
                 }
 
                 SaveTokens(tokens);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 response = await base.SendAsync(request, cancellationToken);
             }
 
@@ -58,6 +54,8 @@ namespace IdentityService.BlazorClient.Infrastructure
 
         private async Task<GetTokenRs> RefreshTokensAsync()
         {
+            var refreshToken = LocalStorage.GetItemAsString(RefreshTokenKey);
+
             using var httpClient = new HttpClient
             {
                 BaseAddress = new Uri(Configuration["App:IdentityServiceUrl"])
@@ -70,7 +68,7 @@ namespace IdentityService.BlazorClient.Infrastructure
                     { "grant_type", "refresh_token" },
                     { "client_id", IdentityConstants.AdminServiceName },
                     { "client_secret", IdentityConstants.AdminServiceSecret },
-                    { "refresh_token", _refreshToken }
+                    { "refresh_token", refreshToken }
                 })
             };
 
@@ -87,9 +85,6 @@ namespace IdentityService.BlazorClient.Infrastructure
 
         private void SaveTokens(GetTokenRs tokens)
         {
-            _accessToken = tokens.AccessToken;
-            _refreshToken = tokens.RefreshToken;
-
             LocalStorage.SetItem(AccessTokenKey, tokens.AccessToken);
             LocalStorage.SetItem(RefreshTokenKey, tokens.RefreshToken);
         }

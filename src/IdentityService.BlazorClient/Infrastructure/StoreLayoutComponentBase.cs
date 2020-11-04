@@ -3,7 +3,7 @@ using System;
 
 namespace IdentityService.BlazorClient.Infrastructure
 {
-    public class StoreComponentBase<TState, TAction, TReducer> : ComponentBase, IDisposable
+    public class StoreLayoutComponentBase<TState, TAction, TReducer> : LayoutComponentBase, IDisposable
         where TState : class
         where TAction : IAction
         where TReducer : IReducer<TState, TAction>
@@ -15,7 +15,7 @@ namespace IdentityService.BlazorClient.Infrastructure
 
         protected TState State => ApplicationStore.ApplicationState;
 
-        protected StoreComponentBase(string componentName)
+        protected StoreLayoutComponentBase(string componentName)
         {
             _componentName = componentName;
         }

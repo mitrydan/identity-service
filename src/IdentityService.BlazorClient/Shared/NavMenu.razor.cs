@@ -6,10 +6,10 @@ namespace IdentityService.BlazorClient.Shared
     {
         private bool _collapseNavMenu = true;
 
+        private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
         [Parameter]
         public bool IsLoggedIn { get; set; }
-
-        private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
         private void ToggleNavMenu()
         {

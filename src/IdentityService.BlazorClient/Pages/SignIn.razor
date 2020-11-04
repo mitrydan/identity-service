@@ -1,3 +1,16 @@
 ﻿@page "/signin"
+@inherits PageBase
 
-<h3>SignIn</h3>
+<div>
+    <EditForm Model="@SignInModel" OnValidSubmit="@SignInHandlerAsync">
+        <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="Email address" @bind-value="SignInModel.Email" required>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password" @bind-value="SignInModel.Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </EditForm>
+</div>
