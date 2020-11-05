@@ -14,14 +14,14 @@ namespace IdentityService.BlazorClient.Store
         private string UserIdReducer(string currentUserId, IAction action) =>
             action switch
             {
-                SetUserIdAction a => a.UserId,
+                SetUserIdAndRoleAction a => a.UserId,
                 _ => currentUserId
             };
 
         private string UserRoleReducer(string currentUserRole, IAction action) =>
             action switch
             {
-                SetUserRoleAction a => a.UserRole,
+                SetUserIdAndRoleAction a => a.UserRole,
                 _ => currentUserRole
             };
     }

@@ -18,7 +18,7 @@ namespace IdentityService.BlazorClient.Pages
         private IIdentityServiceClient Client { get; set; }
 
         [Inject]
-        private ISyncLocalStorageService LocalStorage { get; set; }
+        private ILocalStorageService LocalStorage { get; set; }
 
         private SignInModel SignInModel { get; set; } = new SignInModel();
 
@@ -41,8 +41,8 @@ namespace IdentityService.BlazorClient.Pages
                 throw new InvalidOperationException("Unable to sign in");
             }
 
-            LocalStorage.SetItem(AccessTokenKey, response.AccessToken);
-            LocalStorage.SetItem(RefreshTokenKey, response.RefreshToken);
+            await LocalStorage.SetItemAsync(AccessTokenKey, response.AccessToken);
+            await LocalStorage.SetItemAsync(RefreshTokenKey, response.RefreshToken);
         }
     }
 }

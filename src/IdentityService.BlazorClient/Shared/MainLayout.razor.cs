@@ -33,8 +33,7 @@ namespace IdentityService.BlazorClient.Shared
                 return;
             }
 
-            Dispatch(new SetUserIdAction(userInfo.Sub));
-            Dispatch(new SetUserRoleAction(userInfo.Role));
+            Dispatch(new SetUserIdAndRoleAction(userInfo.Sub, userInfo.Role));
         }
     }
 }

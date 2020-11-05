@@ -17,12 +17,12 @@ namespace IdentityService.BlazorClient.Api
         private const string AccessTokenKey = "AccessToken";
         private const string RefreshTokenKey = "RefreshToken";
 
-        private ISyncLocalStorageService LocalStorage { get; }
+        private ILocalStorageService LocalStorage { get; }
 
         private IConfiguration Configuration { get; }
 
         public ApiClientDelegatingHandler(
-            ISyncLocalStorageService localStorage,
+            ILocalStorageService localStorage,
             IConfiguration configuration)
         {
             LocalStorage = localStorage;
@@ -31,10 +31,8 @@ namespace IdentityService.BlazorClient.Api
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var accessToken = LocalStorage.GetItemAsString(AccessTokenKey);
-
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = await base.SendAsync(request, cancellationToken);
+            var accessToken = await LocalStorage.GetItemAsStringAsync(AccessTokenKey);
+            var response = await SendRequestAsync(request, cancellationToken, accessToken);
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
@@ -44,17 +42,22 @@ namespace IdentityService.BlazorClient.Api
                     return response;
                 }
 
-                SaveTokens(tokens);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                response = await base.SendAsync(request, cancellationToken);
+                await SaveTokensAsync(tokens);
+                response = await SendRequestAsync(request, cancellationToken, tokens.AccessToken);
             }
 
             return response;
         }
 
+        private Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken, string accessToken)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            return base.SendAsync(request, cancellationToken);
+        }
+
         private async Task<GetTokenRs> RefreshTokensAsync()
         {
-            var refreshToken = LocalStorage.GetItemAsString(RefreshTokenKey);
+            var refreshToken = await LocalStorage.GetItemAsStringAsync(RefreshTokenKey);
 
             using var httpClient = new HttpClient
             {
@@ -83,10 +86,10 @@ namespace IdentityService.BlazorClient.Api
             return null;
         }
 
-        private void SaveTokens(GetTokenRs tokens)
+        private async Task SaveTokensAsync(GetTokenRs tokens)
         {
-            LocalStorage.SetItem(AccessTokenKey, tokens.AccessToken);
-            LocalStorage.SetItem(RefreshTokenKey, tokens.RefreshToken);
+            await LocalStorage.SetItemAsync(AccessTokenKey, tokens.AccessToken);
+            await LocalStorage.SetItemAsync(RefreshTokenKey, tokens.RefreshToken);
         }
     }
 }
