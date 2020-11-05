@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IdentityService.BlazorClient.Infrastructure
+namespace IdentityService.BlazorClient.Api
 {
     public class ApiClientDelegatingHandler : DelegatingHandler
     {

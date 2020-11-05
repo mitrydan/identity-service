@@ -1,4 +1,4 @@
-﻿using IdentityService.BlazorClient.Infrastructure;
+﻿using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.Store;
 using Microsoft.AspNetCore.Components;
 using System.Net;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace IdentityService.BlazorClient.Infrastructure
+namespace IdentityService.BlazorClient.Api
 {
     public class IdentityServiceClient : IIdentityServiceClient
     {

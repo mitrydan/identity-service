@@ -1,4 +1,4 @@
-﻿using IdentityService.BlazorClient.Infrastructure;
+﻿using IdentityService.BlazorClient.StateManagement;
 
 namespace IdentityService.BlazorClient.Store
 {

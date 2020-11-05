@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
-using IdentityService.BlazorClient.Infrastructure;
+using IdentityService.BlazorClient.Api;
+using IdentityService.BlazorClient.StateManagement;
 using IdentityService.BlazorClient.Store;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;

@@ -2,7 +2,7 @@
 using IdentityService.BlazorClient.Responses;
 using System.Threading.Tasks;
 
-namespace IdentityService.BlazorClient.Infrastructure
+namespace IdentityService.BlazorClient.Api
 {
     public interface IIdentityServiceClient
     {

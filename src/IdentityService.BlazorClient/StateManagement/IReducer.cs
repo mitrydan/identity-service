@@ -1,4 +1,4 @@
-﻿namespace IdentityService.BlazorClient.Infrastructure
+﻿namespace IdentityService.BlazorClient.StateManagement
 {
     public interface IReducer<TState, TAction>
         where TState : class

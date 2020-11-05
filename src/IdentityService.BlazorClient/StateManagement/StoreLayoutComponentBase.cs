@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 
-namespace IdentityService.BlazorClient.Infrastructure
+namespace IdentityService.BlazorClient.StateManagement
 {
     public class StoreLayoutComponentBase<TState, TAction, TReducer> : LayoutComponentBase, IDisposable
         where TState : class
@@ -11,7 +11,7 @@ namespace IdentityService.BlazorClient.Infrastructure
         private readonly string _componentName;
 
         [Inject]
-        private ApplicationStore<TState, TAction, TReducer> ApplicationStore { get; set; }
+        private Store<TState, TAction, TReducer> ApplicationStore { get; set; }
 
         protected TState State => ApplicationStore.ApplicationState;
 

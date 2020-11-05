@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace IdentityService.BlazorClient.Infrastructure
+namespace IdentityService.BlazorClient.StateManagement
 {
-    public class ApplicationStore<TState, TAction, TReducer>
+    public class Store<TState, TAction, TReducer>
         where TState : class
         where TAction : IAction
         where TReducer : IReducer<TState, TAction>
@@ -15,7 +15,7 @@ namespace IdentityService.BlazorClient.Infrastructure
 
         public TState ApplicationState { get; private set; }
 
-        public ApplicationStore(TState initialState, TReducer rootReducer)
+        public Store(TState initialState, TReducer rootReducer)
         {
             ApplicationState = initialState;
             RootReducer = rootReducer;

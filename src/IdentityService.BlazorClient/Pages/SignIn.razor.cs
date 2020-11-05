@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
+using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.Forms;
-using IdentityService.BlazorClient.Infrastructure;
 using IdentityService.BlazorClient.Requests;
 using IdentityService.Common.Constants;
 using Microsoft.AspNetCore.Components;

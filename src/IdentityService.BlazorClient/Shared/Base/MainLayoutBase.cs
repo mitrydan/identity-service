@@ -1,4 +1,4 @@
-﻿using IdentityService.BlazorClient.Infrastructure;
+﻿using IdentityService.BlazorClient.StateManagement;
 using IdentityService.BlazorClient.Store;
 
 namespace IdentityService.BlazorClient.Shared
