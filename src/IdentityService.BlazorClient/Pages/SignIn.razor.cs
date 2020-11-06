@@ -2,6 +2,8 @@
 using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.Forms;
 using IdentityService.BlazorClient.Requests;
+using IdentityService.BlazorClient.Responses;
+using IdentityService.BlazorClient.Store;
 using IdentityService.Common.Constants;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -20,29 +22,52 @@ namespace IdentityService.BlazorClient.Pages
         [Inject]
         private ILocalStorageService LocalStorage { get; set; }
 
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
         private SignInModel SignInModel { get; set; } = new SignInModel();
 
         public SignIn() : base(nameof(SignIn))
         { }
 
-        private async Task SignInHandlerAsync()
-        {
-            var response = await Client.GetTokenAsync(new GetTokenRq
+        private async Task SignInHandlerAsync() =>
+            await GetTokenAsync(new GetTokenRq
             {
                 GrantType = "password",
                 ClientId = IdentityConstants.AdminServiceName,
                 ClientSecret = IdentityConstants.AdminServiceSecret,
                 Username = SignInModel.Email,
                 Password = SignInModel.Password
-            });
+            })
+            .ContinueWith(SaveTokenAsync, TaskContinuationOptions.OnlyOnRanToCompletion)
+            .ContinueWith(GetUserInfoAsync, TaskContinuationOptions.OnlyOnRanToCompletion)
+            .ContinueWith(CompleteSignInAsync, TaskContinuationOptions.OnlyOnRanToCompletion)
+            .ContinueWith(t =>
+                throw new InvalidOperationException("Unable to sign in"),
+                TaskContinuationOptions.OnlyOnFaulted);
 
-            if (response.IsFailed)
-            {
-                throw new InvalidOperationException("Unable to sign in");
-            }
+        private async Task<GetTokenRs> GetTokenAsync(GetTokenRq request)
+        {
+            return await Client.GetTokenAsync(request);
+        }
 
-            await LocalStorage.SetItemAsync(AccessTokenKey, response.AccessToken);
-            await LocalStorage.SetItemAsync(RefreshTokenKey, response.RefreshToken);
+        private async Task SaveTokenAsync(Task<GetTokenRs> task)
+        {
+            var result = await task;
+            await LocalStorage.SetItemAsync(AccessTokenKey, result.AccessToken);
+            await LocalStorage.SetItemAsync(RefreshTokenKey, result.RefreshToken);
+        }
+
+        private async Task<GetUserInfoRs> GetUserInfoAsync(Task task)
+        {
+            return await Client.GetUserInfoAsync();
+        }
+
+        private async Task CompleteSignInAsync(Task<Task<GetUserInfoRs>> task)
+        {
+            var result = await await task;
+            Dispatch(new SetUserIdAndRoleAction(result.Sub, result.Role));
+            NavigationManager.NavigateTo("/");
         }
     }
 }
