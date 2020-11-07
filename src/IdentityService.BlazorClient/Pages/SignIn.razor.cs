@@ -6,6 +6,7 @@ using IdentityService.BlazorClient.Responses;
 using IdentityService.BlazorClient.Store;
 using IdentityService.Common.Constants;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Threading.Tasks;
 
@@ -24,6 +25,9 @@ namespace IdentityService.BlazorClient.Pages
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private AuthenticationStateProvider AuthenticationProvider { get; set; }
 
         private SignInModel SignInModel { get; set; } = new SignInModel();
 
@@ -67,6 +71,7 @@ namespace IdentityService.BlazorClient.Pages
         {
             var result = await await task;
             Dispatch(new SetUserIdAndRoleAction(result.Sub, result.Role));
+            (AuthenticationProvider as AuthenticationProvider)?.RefreshState();
             NavigationManager.NavigateTo("/");
         }
     }

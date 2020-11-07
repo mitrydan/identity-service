@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
 namespace IdentityService.BlazorClient.Pages
 {
-    public partial class Identity : ComponentBase
+    [Authorize]
+    public partial class Identity : PageBase
     {
+        public Identity()
+            : base(nameof(Identity))
+        { }
+
         protected override async Task OnInitializedAsync()
         {
             await Task.CompletedTask;

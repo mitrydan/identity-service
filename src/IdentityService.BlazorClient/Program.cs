@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.StateManagement;
 using IdentityService.BlazorClient.Store;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ namespace IdentityService.BlazorClient
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
+
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProvider>();
+            builder.Services.AddAuthorizationCore();
 
             builder.Services.AddApplicationStore<ApplicationState, IAction, ApplicationReducer>(
                 new ApplicationState {},

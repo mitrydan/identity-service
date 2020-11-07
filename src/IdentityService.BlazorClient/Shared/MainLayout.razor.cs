@@ -1,6 +1,7 @@
 ﻿using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.Store;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -13,6 +14,9 @@ namespace IdentityService.BlazorClient.Shared
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private AuthenticationStateProvider AuthenticationProvider { get; set; }
 
         private bool IsLoggedId => !string.IsNullOrEmpty(State.UserId);
 
@@ -34,6 +38,7 @@ namespace IdentityService.BlazorClient.Shared
             }
 
             Dispatch(new SetUserIdAndRoleAction(userInfo.Sub, userInfo.Role));
+            (AuthenticationProvider as AuthenticationProvider)?.RefreshState();
         }
     }
 }
