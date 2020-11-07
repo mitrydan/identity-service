@@ -1,16 +1,14 @@
-﻿using IdentityService.BlazorClient.Infrastructure;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
 namespace IdentityService.BlazorClient.Pages
 {
-    public partial class Role : ComponentBase
+    [Authorize]
+    public partial class Role : PageBase
     {
-        [Inject]
-        private EventAggregator EventAggregator { get; set; }
-
-        [Inject]
-        private IdentityServiceHttpClient HttpClient { get; set; }
+        public Role()
+            : base(nameof(Role))
+        { }
 
         protected override async Task OnInitializedAsync()
         {

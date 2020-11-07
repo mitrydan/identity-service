@@ -1,4 +1,8 @@
-using IdentityService.BlazorClient.Infrastructure;
+using Blazored.LocalStorage;
+using IdentityService.BlazorClient.Api;
+using IdentityService.BlazorClient.StateManagement;
+using IdentityService.BlazorClient.Store;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -12,8 +16,20 @@ namespace IdentityService.BlazorClient
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new IdentityServiceHttpClient());
-            builder.Services.AddSingleton(sp => new EventAggregator());
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProvider>();
+            builder.Services.AddAuthorizationCore();
+
+            builder.Services.AddApplicationStore<ApplicationState, IAction, ApplicationReducer>(
+                new ApplicationState {},
+                new ApplicationReducer());
+
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddTransient<ApiClientDelegatingHandler>();
+            builder.Services
+                .AddHttpClient("ApiClient")
+                .AddHttpMessageHandler<ApiClientDelegatingHandler>();
+
+            builder.Services.AddScoped<IIdentityServiceClient, IdentityServiceClient>();
 
             await builder.Build().RunAsync();
         }
