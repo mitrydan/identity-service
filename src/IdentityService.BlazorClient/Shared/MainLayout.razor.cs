@@ -1,4 +1,5 @@
-﻿using IdentityService.BlazorClient.Api;
+﻿using Blazored.LocalStorage;
+using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.Store;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -9,22 +10,22 @@ namespace IdentityService.BlazorClient.Shared
 {
     public partial class MainLayout : MainLayoutBase
     {
+        private const string AccessTokenKey = "AccessToken";
+        private const string RefreshTokenKey = "RefreshToken";
+
         [Inject]
         private IIdentityServiceClient Client { get; set; }
 
         [Inject]
-        private NavigationManager NavigationManager { get; set; }
+        private ILocalStorageService LocalStorage { get; set; }
 
         [Inject]
         private AuthenticationStateProvider AuthenticationProvider { get; set; }
 
         private bool IsLoggedId => !string.IsNullOrEmpty(State.UserId);
 
-        private string NavLinkText => IsLoggedId ? "Sign Out" : "Sign In";
-
-        private string NavLinkHref => IsLoggedId ? "signout" : "signin";
-
-        public MainLayout() : base(nameof(MainLayout))
+        public MainLayout()
+            : base(nameof(MainLayout))
         { }
 
         protected override async Task OnInitializedAsync()
@@ -33,11 +34,18 @@ namespace IdentityService.BlazorClient.Shared
 
             if (userInfo.IsFailed && (userInfo.HttpStatusCode == HttpStatusCode.Unauthorized || userInfo.HttpStatusCode == HttpStatusCode.Forbidden))
             {
-                NavigationManager.NavigateTo("/signin");
                 return;
             }
 
             Dispatch(new SetUserIdAndRoleAction(userInfo.Sub, userInfo.Role));
+            (AuthenticationProvider as AuthenticationProvider)?.RefreshState();
+        }
+
+        private async Task SignOutHandlerAsync()
+        {
+            await LocalStorage.RemoveItemAsync(AccessTokenKey);
+            await LocalStorage.RemoveItemAsync(RefreshTokenKey);
+            Dispatch(new SetUserIdAndRoleAction(null, null));
             (AuthenticationProvider as AuthenticationProvider)?.RefreshState();
         }
     }
