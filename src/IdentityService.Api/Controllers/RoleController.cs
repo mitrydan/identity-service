@@ -1,6 +1,6 @@
 ﻿using IdentityService.Common.Constants;
+using IdentityService.Common.Requests;
 using IdentityService.Models;
-using IdentityService.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

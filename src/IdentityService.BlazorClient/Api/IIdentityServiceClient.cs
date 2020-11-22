@@ -1,5 +1,7 @@
 ﻿using IdentityService.BlazorClient.Requests;
 using IdentityService.BlazorClient.Responses;
+using IdentityService.Common.Requests;
+using System;
 using System.Threading.Tasks;
 
 namespace IdentityService.BlazorClient.Api
@@ -9,5 +11,11 @@ namespace IdentityService.BlazorClient.Api
         Task<GetTokenRs> GetTokenAsync(GetTokenRq request);
 
         Task<GetUserInfoRs> GetUserInfoAsync();
+
+        Task<GetRolesRs> GetRolesAsync();
+
+        Task<bool> CreateRoleAsync(CreateRoleRq request);
+
+        Task<bool> DeleteRoleAsync(Guid id);
     }
 }

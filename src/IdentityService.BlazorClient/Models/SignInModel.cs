@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdentityService.BlazorClient.Forms
+namespace IdentityService.BlazorClient.Models
 {
     public sealed class SignInModel
     {

@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using IdentityService.BlazorClient.Api;
-using IdentityService.BlazorClient.Forms;
+using IdentityService.BlazorClient.Models;
 using IdentityService.BlazorClient.Requests;
 using IdentityService.BlazorClient.Responses;
 using IdentityService.BlazorClient.Store;
@@ -31,7 +31,8 @@ namespace IdentityService.BlazorClient.Pages
 
         private SignInModel SignInModel { get; set; } = new SignInModel();
 
-        public SignIn() : base(nameof(SignIn))
+        public SignIn() 
+            : base(nameof(SignIn))
         { }
 
         private async Task SignInHandlerAsync() =>
