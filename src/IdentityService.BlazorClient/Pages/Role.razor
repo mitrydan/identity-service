@@ -2,5 +2,23 @@
 @inherits PageBase
 
 <div>
-    <h3>Role</h3>
+    <h3>Available roles</h3>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Create role</h5>
+            <EditForm Model="@CreateRole" OnValidSubmit="@CreateRoleHandlerAsync">
+                <input type="text" class="form-control mb-3" placeholder="Role name" @bind-value="CreateRole.RoleName" required>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </EditForm>
+        </div>
+    </div>
+    <ul class="list-group">
+        @foreach (var role in @Roles)
+        {
+            <li class="list-group-item d-flex">
+                <span class="align-self-center">@role.Name</span>
+                <button class="btn btn-primary ml-md-auto" @onclick="@(e => DeleteHandlerAsync(role.Id))">Delete</button>
+            </li>
+        }
+    </ul>
 </div>

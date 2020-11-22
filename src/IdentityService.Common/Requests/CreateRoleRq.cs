@@ -1,6 +1,6 @@
-﻿namespace IdentityService.Requests
+﻿namespace IdentityService.Common.Requests
 {
-    public class CreateRoleRq
+    public sealed class CreateRoleRq
     {
         /// <summary>
         /// Наименование роли
