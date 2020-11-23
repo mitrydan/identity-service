@@ -22,7 +22,7 @@
                 {
                     <span class="badge badge-primary align-self-center">@role</span>
                 }
-                <button class="btn btn-primary ml-md-auto" @onclick="@(e => { })">Delete</button>
+                <button class="btn btn-primary ml-md-auto" @onclick="@(e => DeleteHandlerAsync(user.Id))">Delete</button>
             </li>
         }
     </ul>

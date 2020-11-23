@@ -1,7 +1,9 @@
 ﻿using IdentityService.BlazorClient.Api;
 using IdentityService.BlazorClient.Models;
+using IdentityService.Common.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +20,7 @@ namespace IdentityService.BlazorClient.Pages
 
         private SignInModel CreateUserModel { get; set; } = new SignInModel();
 
-        public User() 
+        public User()
             : base(nameof(User))
         { }
 
@@ -26,8 +28,20 @@ namespace IdentityService.BlazorClient.Pages
             await RefreshAsync(default)
                 .ContinueWith(async t => CompleteRefresh(await t), TaskContinuationOptions.OnlyOnRanToCompletion);
 
+        private async Task DeleteHandlerAsync(Guid id) =>
+            await Client
+                .DeleteUserAsync(id)
+                .ContinueWith(RefreshAsync, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async t => CompleteRefresh(await await t), TaskContinuationOptions.OnlyOnRanToCompletion);
+
         private async Task CreateUserHandlerAsync() =>
-            await Task.Delay(1);
+            await Client.CreateUserAsync(new CreateUserRq
+                {
+                    UserEmail = CreateUserModel.Email,
+                    Password = CreateUserModel.Password
+                })
+                .ContinueWith(RefreshAsync, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async t => CompleteRefresh(await await t), TaskContinuationOptions.OnlyOnRanToCompletion);
 
         private async Task<IEnumerable<UserModel>> RefreshAsync(Task task)
         {
