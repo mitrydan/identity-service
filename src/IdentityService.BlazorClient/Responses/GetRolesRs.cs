@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace IdentityService.BlazorClient.Responses
 {
@@ -13,8 +12,6 @@ namespace IdentityService.BlazorClient.Responses
         public string Name { get; set; }
     }
 
-    public sealed class GetRolesRs : BaseResponse
-    {
-        public List<RoleRs> Roles { get; set; }
-    }
+    public sealed class GetRolesRs : BaseListResponse<RoleRs>
+    { }
 }

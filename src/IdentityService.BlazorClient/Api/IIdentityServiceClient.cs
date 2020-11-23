@@ -12,10 +12,28 @@ namespace IdentityService.BlazorClient.Api
 
         Task<GetUserInfoRs> GetUserInfoAsync();
 
+        #region Roles
+
         Task<GetRolesRs> GetRolesAsync();
 
         Task<bool> CreateRoleAsync(CreateRoleRq request);
 
         Task<bool> DeleteRoleAsync(Guid id);
+
+        #endregion
+
+        #region Users
+
+        Task<GetUsersRs> GetUsersAsync();
+
+        Task<bool> CreateUserAsync(CreateUserRq request);
+
+        Task<bool> DeleteUserAsync(Guid id);
+
+        Task<bool> ApplyRoleAsync(Guid id, ApplyRoleRq request);
+
+        Task<bool> RemoveRoleAsync(Guid id, RemoveRoleRq request);
+
+        #endregion
     }
 }

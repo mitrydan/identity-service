@@ -1,4 +1,4 @@
-﻿namespace IdentityService.Requests
+﻿namespace IdentityService.Common.Requests
 {
     public class CreateUserRq
     {
