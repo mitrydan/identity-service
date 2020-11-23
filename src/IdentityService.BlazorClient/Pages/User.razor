@@ -2,5 +2,16 @@
 @inherits PageBase
 
 <div>
-    <h3>User</h3>
+    <h3>Available users</h3>
+
+    <ul class="list-group">
+        @foreach (var user in Users)
+        {
+            <li class="list-group-item d-flex">
+                <span class="align-self-center mr-3">@user.Name</span>
+                <span class="align-self-center">@string.Join(",", @user.Roles)</span>
+                <button class="btn btn-primary ml-md-auto" @onclick="@(e => { })">Delete</button>
+            </li>
+        }
+    </ul>
 </div>
