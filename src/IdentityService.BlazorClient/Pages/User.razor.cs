@@ -16,6 +16,8 @@ namespace IdentityService.BlazorClient.Pages
 
         private IEnumerable<UserModel> Users { get; set; } = Enumerable.Empty<UserModel>();
 
+        private SignInModel CreateUserModel { get; set; } = new SignInModel();
+
         public User() 
             : base(nameof(User))
         { }
@@ -23,6 +25,9 @@ namespace IdentityService.BlazorClient.Pages
         protected override async Task OnInitializedAsync() =>
             await RefreshAsync(default)
                 .ContinueWith(async t => CompleteRefresh(await t), TaskContinuationOptions.OnlyOnRanToCompletion);
+
+        private async Task CreateUserHandlerAsync() =>
+            await Task.Delay(1);
 
         private async Task<IEnumerable<UserModel>> RefreshAsync(Task task)
         {
