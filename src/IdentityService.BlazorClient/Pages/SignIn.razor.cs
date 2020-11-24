@@ -31,7 +31,7 @@ namespace IdentityService.BlazorClient.Pages
 
         private SignInModel SignInModel { get; set; } = new SignInModel();
 
-        public SignIn() 
+        public SignIn()
             : base(nameof(SignIn))
         { }
 

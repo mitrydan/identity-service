@@ -1,0 +1,29 @@
+﻿@page "/users/{Id:guid}"
+@inherits PageBase
+
+<div>
+    <h3>@User.Name</h3>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Apply role</h5>
+            <EditForm Model="@ApplyRole" OnValidSubmit="@ApplyRoleHandlerAsync">
+                <InputSelect class="form-control mb-3" @bind-Value="@ApplyRole.RoleId">
+                    @foreach (var role in Roles)
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+                </InputSelect>
+                <button class="btn btn-primary">Apply</button>
+            </EditForm>
+        </div>
+    </div>
+    <ul class="list-group">
+        @foreach (var role in @User.Roles)
+        {
+            <li class="list-group-item d-flex">
+                <span class="align-self-center">@role.Name</span>
+                <button class="btn btn-primary ml-md-auto" @onclick="@(e => DeleteHandlerAsync(role.Id))">Delete</button>
+            </li>
+        }
+    </ul>
+</div>

@@ -36,10 +36,10 @@ namespace IdentityService.BlazorClient.Pages
 
         private async Task CreateUserHandlerAsync() =>
             await Client.CreateUserAsync(new CreateUserRq
-                {
-                    UserEmail = CreateUserModel.Email,
-                    Password = CreateUserModel.Password
-                })
+            {
+                UserEmail = CreateUserModel.Email,
+                Password = CreateUserModel.Password
+            })
                 .ContinueWith(RefreshAsync, TaskContinuationOptions.OnlyOnRanToCompletion)
                 .ContinueWith(async t => CompleteRefresh(await await t), TaskContinuationOptions.OnlyOnRanToCompletion);
 
@@ -56,7 +56,7 @@ namespace IdentityService.BlazorClient.Pages
             {
                 Id = x.Id,
                 Name = x.Name,
-                Roles = x.UserRoles?.Select(x => x.Role.Name) ?? Enumerable.Empty<string>()
+                Roles = x.UserRoles?.Select(x => new RoleModel { Id = x.Role.Id, Name = x.Role.Name }) ?? Enumerable.Empty<RoleModel>()
             });
         }
 

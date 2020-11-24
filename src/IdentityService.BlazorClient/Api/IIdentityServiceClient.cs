@@ -26,6 +26,8 @@ namespace IdentityService.BlazorClient.Api
 
         Task<GetUsersRs> GetUsersAsync();
 
+        Task<UserRs> GetUserAsync(Guid id);
+
         Task<bool> CreateUserAsync(CreateUserRq request);
 
         Task<bool> DeleteUserAsync(Guid id);

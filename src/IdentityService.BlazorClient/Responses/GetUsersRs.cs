@@ -10,7 +10,7 @@ namespace IdentityService.BlazorClient.Responses
         public RoleRs Role { get; set; }
     }
 
-    public sealed class UserRs
+    public sealed class UserRs : BaseResponse
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }

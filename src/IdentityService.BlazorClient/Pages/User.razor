@@ -17,10 +17,10 @@
         @foreach (var user in Users)
         {
             <li class="list-group-item d-flex">
-                <span class="align-self-center mr-3">@user.Name</span>
+                <NavLink class="nav-link align-self-center mr-3" href="@{$"users/{@user.Id}"}">@user.Name</NavLink>
                 @foreach (var role in user.Roles)
                 {
-                    <span class="badge badge-primary align-self-center">@role</span>
+                    <span class="badge badge-primary align-self-center mr-1">@role.Name</span>
                 }
                 <button class="btn btn-primary ml-md-auto" @onclick="@(e => DeleteHandlerAsync(user.Id))">Delete</button>
             </li>

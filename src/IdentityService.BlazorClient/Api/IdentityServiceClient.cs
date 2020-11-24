@@ -73,6 +73,9 @@ namespace IdentityService.BlazorClient.Api
         public Task<GetUsersRs> GetUsersAsync() =>
             GetListAsync<GetUsersRs, UserRs>("/api/user");
 
+        public Task<UserRs> GetUserAsync(Guid id) =>
+            GetAsync<UserRs>($"/api/user/{id}");
+
         public Task<bool> CreateUserAsync(CreateUserRq request) =>
             PostAsync("/api/user", request);
 
