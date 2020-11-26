@@ -2,5 +2,28 @@
 @inherits PageBase
 
 <div>
-    <h3>User</h3>
+    <h3>Available users</h3>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Create user</h5>
+            <EditForm Model="@CreateUserModel" OnValidSubmit="@CreateUserHandlerAsync">
+                <input type="email" class="form-control mb-3" placeholder="Email address" @bind-value="CreateUserModel.Email" required>
+                <input type="password" class="form-control mb-3" placeholder="Password" @bind-value="CreateUserModel.Password" required>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </EditForm>
+        </div>
+    </div>
+    <ul class="list-group">
+        @foreach (var user in Users)
+        {
+            <li class="list-group-item d-flex">
+                <NavLink class="nav-link align-self-center mr-3" href="@{$"users/{@user.Id}"}">@user.Name</NavLink>
+                @foreach (var role in user.Roles)
+                {
+                    <span class="badge badge-primary align-self-center mr-1">@role.Name</span>
+                }
+                <button class="btn btn-primary ml-md-auto" @onclick="@(e => DeleteHandlerAsync(user.Id))">Delete</button>
+            </li>
+        }
+    </ul>
 </div>

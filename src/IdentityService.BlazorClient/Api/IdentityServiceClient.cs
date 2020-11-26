@@ -52,54 +52,109 @@ namespace IdentityService.BlazorClient.Api
             };
         }
 
-        public async Task<GetUserInfoRs> GetUserInfoAsync()
+        public Task<GetUserInfoRs> GetUserInfoAsync() =>
+            GetAsync<GetUserInfoRs>("/connect/userinfo");
+
+        #region Roles
+
+        public Task<GetRolesRs> GetRolesAsync() =>
+            GetListAsync<GetRolesRs, RoleRs>("/api/role");
+
+        public Task<bool> CreateRoleAsync(CreateRoleRq request) =>
+            PostAsync("/api/role", request);
+
+        public Task<bool> DeleteRoleAsync(Guid id) =>
+            DeleteAsync($"/api/role/{id}");
+
+        #endregion
+
+        #region Users
+
+        public Task<GetUsersRs> GetUsersAsync() =>
+            GetListAsync<GetUsersRs, UserRs>("/api/user");
+
+        public Task<UserRs> GetUserAsync(Guid id) =>
+            GetAsync<UserRs>($"/api/user/{id}");
+
+        public Task<bool> CreateUserAsync(CreateUserRq request) =>
+            PostAsync("/api/user", request);
+
+        public Task<bool> DeleteUserAsync(Guid id) =>
+            DeleteAsync($"/api/user/{id}");
+
+        public Task<bool> ApplyRoleAsync(Guid id, ApplyRoleRq request) =>
+            PutAsync($"/api/user/{id}/applyrole", request);
+
+        public Task<bool> RemoveRoleAsync(Guid id, RemoveRoleRq request) =>
+            PutAsync($"/api/user/{id}/removerole", request);
+
+        #endregion
+
+        #region Helper methods
+
+        private async Task<TResponse> GetAsync<TResponse>(string url)
+            where TResponse : BaseResponse, new()
         {
-            var response = await HttpClient.GetAsync("/connect/userinfo");
+            var response = await HttpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<GetUserInfoRs>(responseString);
+                return JsonConvert.DeserializeObject<TResponse>(responseString);
             }
 
-            return new GetUserInfoRs
+            return new TResponse
             {
                 IsFailed = true,
                 HttpStatusCode = response.StatusCode
             };
         }
 
-        public async Task<GetRolesRs> GetRolesAsync()
+        private async Task<TResponse> GetListAsync<TResponse, TModel>(string url)
+            where TResponse : BaseListResponse<TModel>, new()
+            where TModel : class
         {
-            var response = await HttpClient.GetAsync("/api/role");
+            var response = await HttpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return new GetRolesRs
+                var result = JsonConvert.DeserializeObject<IList<TModel>>(responseString);
+                return new TResponse
                 {
-                    Roles = JsonConvert.DeserializeObject<List<RoleRs>>(responseString)
+                    Data = result
                 };
             }
 
-            return new GetRolesRs
+            return new TResponse
             {
                 IsFailed = true,
                 HttpStatusCode = response.StatusCode
             };
         }
 
-        public async Task<bool> CreateRoleAsync(CreateRoleRq request)
+        private async Task<bool> PostAsync<TRequest>(string url, TRequest request)
+            where TRequest : class
         {
             var data = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-            var response = await HttpClient.PostAsync("/api/role", data);
+            var response = await HttpClient.PostAsync(url, data);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteRoleAsync(Guid id)
+        private async Task<bool> PutAsync<TRequest>(string url, TRequest request)
+            where TRequest : class
         {
-            var response = await HttpClient.DeleteAsync($"/api/role/{id}");
+            var data = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+            var response = await HttpClient.PutAsync(url, data);
             return response.IsSuccessStatusCode;
         }
+
+        private async Task<bool> DeleteAsync(string url)
+        {
+            var response = await HttpClient.DeleteAsync(url);
+            return response.IsSuccessStatusCode;
+        }
+
+        #endregion
     }
 }

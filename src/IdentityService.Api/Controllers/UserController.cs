@@ -1,6 +1,6 @@
 ﻿using IdentityService.Common.Constants;
+using IdentityService.Common.Requests;
 using IdentityService.Models;
-using IdentityService.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -43,6 +43,19 @@ namespace IdentityService.Controllers
                     .ThenInclude(x => x.Role)
                 .ToListAsync();
             return Ok(usersWithRoles);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApplicationUser))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetUserAsync([Required] string id)
+        {
+            var userWithRoles = await _userManager
+                .Users
+                .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return Ok(userWithRoles);
         }
 
         [HttpPost]

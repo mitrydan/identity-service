@@ -52,7 +52,7 @@ namespace IdentityService.BlazorClient.Pages
                 return Enumerable.Empty<RoleModel>();
             }
 
-            return getRolesReslt.Roles.Select(x => new RoleModel
+            return getRolesReslt.Data.Select(x => new RoleModel
             {
                 Id = x.Id,
                 Name = x.Name,

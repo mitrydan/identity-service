@@ -1,6 +1,6 @@
-﻿namespace IdentityService.Requests
+﻿namespace IdentityService.Common.Requests
 {
-    public class ApplyRoleRq
+    public class RemoveRoleRq
     {
         /// <summary>
         /// Идентификатор роли
