@@ -1,15 +1,15 @@
 # identity-service
 Identity web service with dashboard on ASP.NET Core/Blazor
 
-### Сборка и запуск приложения в Docker
+### Build & Run in Docker
 
-В корне репозитория выполнить комманды:
+In the repository folder run the following commands:
 ```
 cd deploy
 docker-compose build
 docker-compose up
 ```
-Front доступен по ссылке:
+Front is available here:
 ```
 http://localhost:5000
 ```
